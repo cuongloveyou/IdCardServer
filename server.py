@@ -1,3 +1,4 @@
+import io
 import os
 
 from flask import Flask, request
@@ -62,14 +63,6 @@ def viethoa_process():
     #s = request.args.get("chuoiinput")
     return s.upper()
 
-def convertBase64ToImg(imgbase64):
-    try:
-        imgbase64 = np.fromstring(base64.b64decode(imgbase64), dtype=np.uint8)
-        imgbase64 = cv2.imdecode(imgbase64, cv2.IMREAD_ANYCOLOR)
-    except:
-        return None
-    return imgbase64
-
 @app.route('/', methods=['POST'] )
 @cross_origin(origin='*')
 def home_process():
@@ -80,9 +73,8 @@ def home_process():
     config['predictor']['beamsearch'] = False
     detector = Predictor(config)
     imgbase64 = request.form.get("imgbase64")
-    img = convertBase64ToImg(imgbase64)
-    img = Image.open(img)
-    plt.imshow(img)
+    img = base64.b64decode(imgbase64)
+    img = Image.open(io.BytesIO(img))
     s = detector.predict(img)
     return s
 
