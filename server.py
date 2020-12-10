@@ -70,21 +70,14 @@ def convertBase64ToImg(imgbase64):
         return None
     return imgbase64
 
-@app.route('/', methods=['POST','GET'] )
+@app.route('/', methods=['POST'] )
 @cross_origin(origin='*')
 def home_process():
-    config = Cfg.load_config_from_name('vgg_transformer')
-    config['weights'] = 'https://drive.google.com/uc?id=13327Y1tz1ohsm5YZMyXVMPIOjoOA0OaA'
-    config['cnn']['pretrained'] = False
-    config['device'] = 'cuda:0'
-    config['predictor']['beamsearch'] = False
-    detector = Predictor(config)
-    imgbase64 = request.form.get("imgBase64")
+    imgbase64 = request.form.get("imgbase64")
     img = convertBase64ToImg(imgbase64)
     img = Image.open(img)
     plt.imshow(img)
-    s = detector.predict(img)
-    return s
+    return imgbase64
 
 # Start Backend
 if __name__ == '__main__':
