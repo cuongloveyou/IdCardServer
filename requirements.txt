@@ -1,2 +1,7 @@
-Flask
+Flask~=1.1.2
 flask-cors
+vietocr~=0.3.4
+matplotlib~=3.3.3
+Pillow~=8.0.1
+numpy~=1.19.3
+opencv-python~=4.4.0.46
