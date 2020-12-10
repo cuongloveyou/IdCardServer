@@ -73,13 +73,20 @@ def convertBase64ToImg(imgbase64):
 @app.route('/', methods=['POST'] )
 @cross_origin(origin='*')
 def home_process():
+    config = Cfg.load_config_from_name('vgg_transformer')
+    config['weights'] = 'https://drive.google.com/uc?id=13327Y1tz1ohsm5YZMyXVMPIOjoOA0OaA'
+    config['cnn']['pretrained'] = False
+    config['device'] = 'cuda:0'
+    config['predictor']['beamsearch'] = False
+    detector = Predictor(config)
     imgbase64 = request.form.get("imgbase64")
     img = convertBase64ToImg(imgbase64)
     img = Image.open(img)
-    plt.imshow(img)
-    return imgbase64
+    s = detector.predict(img)
+    return s
 
 # Start Backend
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))  # The port to be listening to — hence, the URL must be <hostname>:<port>/ inorder to send the request to this program
     app.run(host='0.0.0.0', port=port)  # Start listening
+    #app.run(host='127.0.0.1', port=port)  # Start listening
