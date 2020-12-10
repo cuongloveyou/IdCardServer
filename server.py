@@ -76,12 +76,13 @@ def home_process():
     config = Cfg.load_config_from_name('vgg_transformer')
     config['weights'] = 'https://drive.google.com/uc?id=13327Y1tz1ohsm5YZMyXVMPIOjoOA0OaA'
     config['cnn']['pretrained'] = False
-    config['device'] = 'cuda:0'
+    config['device'] = 'cpu'
     config['predictor']['beamsearch'] = False
     detector = Predictor(config)
     imgbase64 = request.form.get("imgbase64")
     img = convertBase64ToImg(imgbase64)
     img = Image.open(img)
+    plt.imshow(img)
     s = detector.predict(img)
     return s
 
