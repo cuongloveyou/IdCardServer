@@ -1,11 +1,14 @@
 import os
+
 from flask import Flask
+from flask_cors import CORS, cross_origin
 from flask import request
 
 # Khởi tạo Flask Server Backend
 app = Flask(__name__)
 
 # Apply Flask CORS
+CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 # http://127.0.0.1/add
@@ -15,6 +18,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 @app.route('/add', methods=['POST', 'GET'] )
+@cross_origin(origin='*')
 def add_process():
     a = int(request.args.get('sothunhat'))
     b = int(request.args.get('sothuhai'))
@@ -23,6 +27,7 @@ def add_process():
 
 
 @app.route('/minus', methods=['POST','GET'] )
+@cross_origin(origin='*')
 def minus_process():
     a = int(request.args.get('sothunhat'))
     b = int(request.args.get('sothuhai'))
@@ -31,29 +36,28 @@ def minus_process():
 
 
 @app.route('/multi', methods=['POST','GET'] )
+@cross_origin(origin='*')
 def multi_process():
     return "Hàm nhân"
 
 
 @app.route('/div', methods=['POST','GET'] )
+@cross_origin(origin='*')
 def div_process():
     return "Hàm chia"
 
 
 @app.route('/viethoa', methods=['POST'] )
+@cross_origin(origin='*')
 def viethoa_process():
     s = request.form.get("chuoiinput")
     #s = request.args.get("chuoiinput")
     return s.upper()
 
 @app.route('/', methods=['POST','GET'] )
+@cross_origin(origin='*')
 def home_process():
     return "hihihaha"
-
-@app.route('/hello') #whenever this webserver is called with <hostname:port>/hello then this section is called
-def hello(): #The subroutine name that handles the call
-	output = 'Hello World'
-	return output #Whatever is returned from this subroutine is what is returned to the requester and is shown on the browser page
 
 # Start Backend
 if __name__ == '__main__':
